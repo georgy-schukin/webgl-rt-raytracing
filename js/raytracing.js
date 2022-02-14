@@ -14,7 +14,8 @@ var settings = {
 	refractionEnabled: 0,
 	maxRecursionDepth: 1,
 	backgroundColor: [0.1, 0.1, 0.1],
-	ambientLight: [0.05, 0.05, 0.05]
+	ambientLight: [0.05, 0.05, 0.05],
+	rotationAngle: [0.0, 0.0]
 }
 
 var camera = {
@@ -25,8 +26,7 @@ var camera = {
 
 function initGL() {
 	gl.clearColor(settings.backgroundColor[0], settings.backgroundColor[1], settings.backgroundColor[2], 1.0);
-    gl.disable(gl.DEPTH_TEST);
- 	gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.disable(gl.DEPTH_TEST); 	
 }
 
 function initMatrices() {
@@ -134,15 +134,21 @@ function setProgramUniforms() {
     gl.uniform1f(gl.getUniformLocation(program, "cameraFOV"), camera.FOV);   
     gl.uniform1f(gl.getUniformLocation(program, "fovTangent"), camera.FOVTangent);         
 
+    var rotationMatrix = mat4.create();
+    mat4.fromYRotation(rotationMatrix, settings.rotationAngle[0]);
+    mat4.rotateX(rotationMatrix, rotationMatrix, settings.rotationAngle[1]);
+
     var modelViewMatrix = mat4.create();
-	mat4.multiply(modelViewMatrix, matrices.viewMatrix, matrices.modelMatrix);	
+	mat4.multiply(modelViewMatrix, rotationMatrix, matrices.modelMatrix);	
 
 	if (scene !== undefined) {
-    	scene.setProgramUniforms(gl, program, matrices.modelMatrix);
+    	scene.setProgramUniforms(gl, program, modelViewMatrix);
 	}
 }
 
 function drawGL() {
+	gl.viewport(0, 0, gl.canvas.clientWidth, gl.canvas.clientHeight);
+
 	gl.clear(gl.COLOR_BUFFER_BIT);	
 
 	gl.useProgram(program);
@@ -194,6 +200,15 @@ function setSamples(samples) {
 	settings.numOfSamples = samples;
 }
 
+function setSamplingMode(samplingMode) {
+	settings.samplingMode = samplingMode;
+}
+
 function enableTransparency(enabled) {
 	settings.refractionEnabled = enabled;
+}
+
+function rotateScene(dx, dy) {
+	settings.rotationAngle[0] += dx;
+	settings.rotationAngle[1] += dy;
 }

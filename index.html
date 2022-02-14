@@ -24,20 +24,33 @@
 		<td><input type="number" id="samples" value="1" min="1" max="256"></td>
 		</tr>
 		<tr>
+		<td><label>Sampling:</label></td>
+		<td><select id="sampling">
+			<option selected value="0">Random</option>
+			<option value="1">Multi Jittered</option> 
+			</select>
+		</td>
+		</tr>
+		<tr>
 		<td><label>Transparency:</label></td>
 		<td><input type="checkbox" id="transparency"></td>
-		</tr>
+		</tr>		
 		</table>
 	</div>	
 
 	<script type="text/javascript">	
-		$(document).ready( function () {					
+		$(document).ready( function () {
+			var $canvas = $("#canvas");					
 			var $maxDepth = $("#max-depth");
 			var $samples = $("#samples");
+			var $sampling = $("#sampling");
 			var $transparency = $("#transparency");
+			var mousePressed = false;
+			var prevMousePoint = null;
 
 			setMaxDepth($maxDepth.val());
 			setSamples($samples.val());
+			setSamplingMode($sampling.val());
 			enableTransparency($transparency.prop("checked"));		
 
 			init();			
@@ -45,15 +58,38 @@
 
 			$maxDepth.change( function (event) {
 				setMaxDepth($(this).val());
-				render();
+				requestAnimationFrame(render);
 			});
 			$samples.change( function (event) {
 				setSamples($(this).val());
-				render();
+				requestAnimationFrame(render);
+			});
+			$sampling.change( function (event) {
+				setSamplingMode($(this).val());
+				requestAnimationFrame(render);
 			});
 			$transparency.change( function (event) {
 				enableTransparency($(this).prop("checked"));
-				render();
+				requestAnimationFrame(render);
+			});
+
+			$canvas.mousedown( function (event) {
+				mousePressed = true;
+			});
+			$canvas.mouseup( function (event) {
+				mousePressed = false;
+				prevMousePoint = null;
+			});
+			$canvas.mousemove( function (event) {
+				if (mousePressed) {
+					if (prevMousePoint !== null) {
+						var dx = (event.clientX - prevMousePoint[0]) * Math.PI / 180.0;
+						var dy = (event.clientY - prevMousePoint[1]) * Math.PI / 180.0;
+						rotateScene(dx, dy);
+						requestAnimationFrame(render);
+					}
+					prevMousePoint = [event.clientX, event.clientY];
+				}
 			});
 		});
 	</script>
