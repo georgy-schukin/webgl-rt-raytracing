@@ -60,6 +60,12 @@ class Scene {
 		this.objects.push(obj);
 	}
 
+	initDefaultLights() {
+		this.addLight(new LightSource ([-15, 15, -15], [1.0, 1.0, 1.0]));
+    	this.addLight(new LightSource ([1, 1, 0], [0.2, 0.2, 1.0]));
+    	this.addLight(new LightSource ([0, -10, 6], [1.0, 0.2, 0.2]));    
+	}
+
 	initDefault() {
 		var red = [1, 0.3, 0.3];		
     	var blue = [0.3, 0.3, 1];
@@ -84,11 +90,9 @@ class Scene {
     	this.addObject(new Sphere ([1.5, 0.5, -2], 1.0, whiteMat));
     	this.addObject(new Sphere ([-2, 1, 5], 0.7, yellowMat));
     	this.addObject(new Sphere ([-2.2, 0, 2], 1.0, whiteMat));
-    	this.addObject(new Sphere ([1, 1, 4], 0.7, purpleMat));
+    	this.addObject(new Sphere ([1, 1, 4], 0.7, purpleMat));    
 
-    	this.addLight(new LightSource ([-15, 15, -15], [1.0, 1.0, 1.0]));
-    	this.addLight(new LightSource ([1, 1, 0], [0.2, 0.2, 1.0]));
-    	this.addLight(new LightSource ([0, -10, 6], [1.0, 0.2, 0.2]));    
+    	this.initDefaultLights();	
 	}
 
 	setProgramUniforms(gl, program, modelViewMatrix) {
