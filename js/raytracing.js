@@ -147,6 +147,7 @@ function setProgramUniforms() {
 }
 
 function drawGL() {
+	gl.clearColor(settings.backgroundColor[0], settings.backgroundColor[1], settings.backgroundColor[2], 1.0);
 	gl.viewport(0, 0, gl.canvas.clientWidth, gl.canvas.clientHeight);
 
 	gl.clear(gl.COLOR_BUFFER_BIT);	
@@ -206,6 +207,10 @@ function setSamplingMode(samplingMode) {
 
 function enableTransparency(enabled) {
 	settings.refractionEnabled = enabled;
+}
+
+function setBackgroundColor(rgb) {
+	settings.backgroundColor = rgb;
 }
 
 function rotateScene(dx, dy) {

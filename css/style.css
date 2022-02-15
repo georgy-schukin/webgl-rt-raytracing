@@ -16,6 +16,7 @@ canvas  {
 	left: 10px;		
 	color: #fff;
 	font-family: Verdana, Geneva, sans-serif;
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 #controls-pane label {
