@@ -37,7 +37,12 @@
 		</tr>
 		<tr>
 		<td><label>Background:</label></td>
-		<td><input type="text" id="bg-color" value="20202f"></td>
+		<td><label>#</label><input type="text" id="bg-color" value="20202f" size="6"></td>
+		</tr>
+		<tr>
+		<tr>
+		<td><label>Objects:</label><input type="number" id="num-of-objects" value="16" min="1" max="64"></td>
+		<td><input type="button" id="random-scene" value="Random scene"></td>
 		</tr>
 		<tr>		
 		</table>
@@ -100,6 +105,10 @@
 					$(this).val(currentBGColor);
 				}
 			});
+			$("#random-scene").click( function(event) {
+				randomScene($("#num-of-objects").val());
+				requestAnimationFrame(render);	
+			})
 
 			$canvas.mousedown( function (event) {
 				mousePressed = true;

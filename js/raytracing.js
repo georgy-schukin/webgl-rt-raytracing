@@ -217,3 +217,24 @@ function rotateScene(dx, dy) {
 	settings.rotationAngle[0] += dx;
 	settings.rotationAngle[1] += dy;
 }
+
+function randomScene(numOfObjects) {
+	if (scene !== null) {
+		scene.clearObjects();
+		for (let i = 0; i < numOfObjects; i++) {
+			scene.addRandomObject();
+		}
+	}
+}
+
+function addRandomObjectToScene() {
+	if (scene !== null) {
+		scene.addRandomObject();
+	}
+}
+
+function clearScene() {
+	if (scene !== null) {
+		scene.clearObjects();
+	}
+}

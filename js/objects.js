@@ -60,6 +60,25 @@ class Scene {
 		this.objects.push(obj);
 	}
 
+	addRandomObject(maxPos = 4.6, minRad = 0.4, maxRad = 1.6) {
+		var pos = [2 * maxPos * Math.random() - maxPos, 
+				   2 * maxPos * Math.random() - maxPos, 
+				   2 * maxPos * Math.random() - maxPos];
+	   	const radius = (maxRad - minRad) * Math.random() + minRad;		
+	   	const diffuse = [Math.random(), Math.random(), Math.random()];
+	   	const diffCoeff = Math.random(); 
+	   	const specCoeff = 1.0 - diffCoeff;  
+	   	const shininess = 1000 * Math.random();
+	   	const materialId = this.addMaterial(new Material (scaleV(diffuse, diffCoeff), scaleV(diffuse, specCoeff), shininess));
+    	this.getMaterial(materialId).makeTransparent(Math.random(), 0.5 + Math.random());
+    	this.addObject(new Sphere(pos, radius, materialId));
+	}	
+
+	clearObjects() {
+		this.objects = [];
+		this.materials = [];
+	}
+
 	initDefaultLights() {
 		this.addLight(new LightSource ([-15, 15, -15], [1.0, 1.0, 1.0]));
     	this.addLight(new LightSource ([1, 1, 0], [0.2, 0.2, 1.0]));
